@@ -1,6 +1,8 @@
 import scipy.sparse
 from rfdiffusion.chemical import *
+from rfdiffusion.chemical import num2aa, aa2num, cos_ideal_NCAC, aa2long
 from rfdiffusion.scoring import *
+import torch
 
 
 def generate_Cbeta(N, Ca, C):
@@ -108,7 +110,7 @@ def get_tor_mask(seq, torsion_indices, mask_in=None):
     tors_mask[:, :, 9] = torch.logical_and(tors_mask[:, :, 9], seq != aa2num["UNK"])
     tors_mask[:, :, 9] = torch.logical_and(tors_mask[:, :, 9], seq != aa2num["MAS"])
 
-    if mask_in != None:
+    if mask_in is not None:
         # mask for missing atoms
         # chis
         ti0 = torch.gather(mask_in, 2, torsion_indices[seq, :, 0])
